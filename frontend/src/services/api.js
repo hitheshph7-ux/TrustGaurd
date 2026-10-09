@@ -4,10 +4,29 @@ async function handleResponse(res) {
   if (!res.ok) {
     let errorDetail = 'An unexpected error occurred';
     try {
-      const errorJson = await res.json();
-      errorDetail = errorJson.detail || errorDetail;
+      const text = await res.text();
+      if (text) {
+        try {
+          const errorJson = JSON.parse(text);
+          if (errorJson.detail) {
+            if (typeof errorJson.detail === 'string') {
+              errorDetail = errorJson.detail;
+            } else if (Array.isArray(errorJson.detail)) {
+              errorDetail = errorJson.detail.map((err) => `${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`).join(', ');
+            } else {
+              errorDetail = JSON.stringify(errorJson.detail);
+            }
+          } else if (errorJson.message) {
+            errorDetail = typeof errorJson.message === 'string' ? errorJson.message : JSON.stringify(errorJson.message);
+          } else {
+            errorDetail = text;
+          }
+        } catch (e) {
+          errorDetail = text;
+        }
+      }
     } catch (e) {
-      errorDetail = await res.text() || errorDetail;
+      errorDetail = res.statusText || errorDetail;
     }
     throw new Error(errorDetail);
   }
