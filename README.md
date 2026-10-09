@@ -90,10 +90,26 @@ Access the frontend at `http://localhost:5173` and backend API docs at `http://l
 ---
 
 ## 7. Output Screenshots
-![Output Screenshot](docs/output.png)
 
-**Description:**  
-The TrustGuard Security Dashboard displays real-time security telemetry including total scans executed, high/medium/low risk level breakdown (Recharts Donut chart), scan vector breakdown (Recharts Bar chart), recent account activity table, and interactive threat inspection modals.
+### 1. Security Telemetry Overview Dashboard
+![Security Telemetry Overview Dashboard](docs/overview_dashboard.png)
+*Real-time security telemetry displaying total scans executed, risk distribution (donut chart), scan vectors breakdown (bar chart), session isolation badges, and quick-action scan launchers.*
+
+### 2. Email Phishing & Spam Inspector
+![Email Phishing & Spam Inspector](docs/email_security.png)
+*Evaluates email header details, display names, and body content using Scikit-Learn TF-IDF machine learning and heuristic rules to detect phishing threats and promotional spam.*
+
+### 3. URL Security & Typosquatting Scanner
+![URL Security & Typosquatting Scanner](docs/url_scanner.png)
+*Evaluates link safety, typosquatting brand impersonation, raw IP hosts, and high-risk TLDs without external network fetches (offline SSRF-safe parsing).*
+
+### 4. Invoice Fraud & Bank Detail Verification
+![Invoice Fraud & Bank Detail Verification](docs/invoice_verification.png)
+*Cross-verifies submitted vendor details, invoice reference numbers, bank account numbers, and IFSC/routing codes against trusted vendor directory records to stop redirection fraud.*
+
+### 5. Security Scan History & Audit Records
+![Security Scan History & Audit Records](docs/scan_history.png)
+*Complete audit trail recording all user-isolated email, URL, and invoice security assessments with filterable search and deep-dive modal inspection.*
 
 ---
 
