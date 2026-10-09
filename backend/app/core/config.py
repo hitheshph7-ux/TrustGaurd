@@ -12,8 +12,9 @@ class Settings(BaseSettings):
     # Security & CORS
     CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
     
-    # Optional Threat Intelligence Provider Key
+    # Optional Threat Intelligence Provider Keys
     VT_API_KEY: str = os.getenv("VT_API_KEY", "")
+    GSB_API_KEY: str = os.getenv("GSB_API_KEY", "")
 
     model_config = SettingsConfigDict(case_sensitive=True)
 

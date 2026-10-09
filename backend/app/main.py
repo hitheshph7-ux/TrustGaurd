@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.database import engine, Base
+import app.models  # Import all models to ensure metadata registration
 from app.api import api_router
 from app.seed import seed_database
 

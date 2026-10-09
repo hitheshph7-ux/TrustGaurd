@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ScanResultCard from '../components/ScanResultCard';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Globe, Sparkles, Send, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
+import { Globe, Sparkles, Send, AlertTriangle, ShieldCheck, Lock, Database } from 'lucide-react';
 
 const DEMO_TYPOSQUAT = "http://paypa1.com.secure-auth-login.xyz/verify-account";
 const DEMO_IP_HOST = "http://192.168.1.100/login/bank-verification.php";
@@ -52,7 +52,7 @@ export default function UrlScanner() {
           </div>
           <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Suspicious Web Link Inspection</h2>
           <p className="text-xs text-slate-500 mt-1 max-w-2xl">
-            Evaluate link safety, typosquatting, brand impersonation, IP-address hostnames, and suspicious top-level domains without risking server-side execution.
+            Evaluate link safety, typosquatting, brand impersonation, IP hostnames, and threat intelligence reputation APIs (VirusTotal / Safe Browsing with TTL caching) without risking server-side execution.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function UrlScanner() {
           <button
             type="button"
             onClick={() => loadDemo(DEMO_TYPOSQUAT)}
-            className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-rose-500" />
             <span>Impersonation Link</span>
@@ -69,7 +69,7 @@ export default function UrlScanner() {
           <button
             type="button"
             onClick={() => loadDemo(DEMO_IP_HOST)}
-            className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Bare IP Host</span>
@@ -77,7 +77,7 @@ export default function UrlScanner() {
           <button
             type="button"
             onClick={() => loadDemo(DEMO_SAFE_URL)}
-            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
             <span>Safe URL</span>
@@ -111,11 +111,19 @@ export default function UrlScanner() {
           </div>
         </div>
 
-        {/* SSRF Protection Callout */}
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-start space-x-2.5">
-          <Lock className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-bold text-slate-800">SSRF Protection Safeguard:</span> TrustGuard performs pure offline domain structure & syntax heuristic parsing. User submitted URLs are never automatically visited, fetched, or executed by backend servers.
+        {/* Multi-layered Evidence & SSRF Callout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-start space-x-2">
+            <Database className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold text-slate-800">Reputation API & Caching:</span> Configured with VirusTotal / Safe Browsing APIs with safe 1-hour TTL result caching to respect rate limits. Lookups are weighted evidence alongside heuristics.
+            </div>
+          </div>
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-start space-x-2">
+            <Lock className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold text-slate-800">SSRF Protection Safeguard:</span> Pure DNS / reputation hash queries only. Target URLs are never visited or HTTP fetched by backend servers.
+            </div>
           </div>
         </div>
 
@@ -132,7 +140,7 @@ export default function UrlScanner() {
       </form>
 
       {/* Loading state */}
-      {loading && <LoadingSpinner text="Analyzing hostname subdomains & lookalike brand patterns..." />}
+      {loading && <LoadingSpinner text="Querying reputation services & analyzing hostname subdomains..." />}
 
       {/* Result Display */}
       {result && !loading && (

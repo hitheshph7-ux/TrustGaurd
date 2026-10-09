@@ -86,6 +86,15 @@ export const api = {
       body: JSON.stringify({ ...data, user_id: userId }),
     }).then(handleResponse),
 
+  extractInvoiceOcr: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetch(`${API_BASE}/scans/invoice/ocr`, {
+      method: 'POST',
+      body: formData,
+    }).then(handleResponse);
+  },
+
   // Scan History (User Isolated)
   getScans: (params = {}) => {
     const query = new URLSearchParams();
@@ -99,7 +108,7 @@ export const api = {
 
   getScanById: (id) => fetch(`${API_BASE}/scans/${id}`).then(handleResponse),
 
-  // Vendor Management
+  // Vendor Management & Bank Change Approval Workflow
   getVendors: () => fetch(`${API_BASE}/vendors`).then(handleResponse),
 
   createVendor: (vendorData) =>
@@ -119,5 +128,22 @@ export const api = {
   deleteVendor: (id) =>
     fetch(`${API_BASE}/vendors/${id}`, {
       method: 'DELETE',
+    }).then(handleResponse),
+
+  getVendorBankHistory: (vendorId) =>
+    fetch(`${API_BASE}/vendors/${vendorId}/history`).then(handleResponse),
+
+  requestVendorBankChange: (vendorId, data) =>
+    fetch(`${API_BASE}/vendors/${vendorId}/bank-change`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+
+  approveVendorBankChange: (vendorId, historyId, data) =>
+    fetch(`${API_BASE}/vendors/${vendorId}/approve-bank-change/${historyId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     }).then(handleResponse),
 };
